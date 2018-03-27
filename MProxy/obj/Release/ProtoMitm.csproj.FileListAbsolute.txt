@@ -1,0 +1,5 @@
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\bin\Release\MProxy.exe.config
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\bin\Release\MProxy.exe
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\bin\Release\MProxy.pdb
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\obj\Release\MProxy.exe
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\obj\Release\MProxy.pdb

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9730C922-8829-4162-9DA2-2A4329A1BF51}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MProxy</RootNamespace>
+    <AssemblyName>MProxy</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cryptography\C2SSecurity.cs" />
+    <Compile Include="Cryptography\MD5H.cs" />
+    <Compile Include="Cryptography\MPPC.cs" />
+    <Compile Include="Cryptography\MPPCPacker.cs" />
+    <Compile Include="Cryptography\MPPCUnpacker.cs" />
+    <Compile Include="Cryptography\RC4.cs" />
+    <Compile Include="Cryptography\S2CSecurity.cs" />
+    <Compile Include="Cryptography\Security.cs" />
+    <Compile Include="Data\CompactUint.cs" />
+    <Compile Include="Data\GString.cs" />
+    <Compile Include="Net\Base\NetIOLocalClient.cs" />
+    <Compile Include="Net\Delivery\NetIODeliveryClient.cs" />
+    <Compile Include="Net\Delivery\NetIODeliveryServer.cs" />
+    <Compile Include="Net\Base\NetIOClient.cs" />
+    <Compile Include="Net\Link\NetIOLinkClient.cs" />
+    <Compile Include="Net\Base\NetIORemoteClient.cs" />
+    <Compile Include="Net\Link\NetIOLinkServer.cs" />
+    <Compile Include="Data\Octets.cs" />
+    <Compile Include="Net\Base\NetIOServer.cs" />
+    <Compile Include="Net\Provider\NetIOProviderClient.cs" />
+    <Compile Include="Net\Provider\NetIOProviderServer.cs" />
+    <Compile Include="Net\Proxies\HomeProxy.cs" />
+    <Compile Include="Net\Proxies\Proxy.cs" />
+    <Compile Include="Net\Proxies\LinkProxy.cs" />
+    <Compile Include="Net\Proxies\ProxyOperative.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Net\RecvEventArgs.cs" />
+    <Compile Include="Protocols\Client\C02CMKey.cs" />
+    <Compile Include="Protocols\Client\C03LogginAnnounce.cs" />
+    <Compile Include="Protocols\Client\C14ECHomeQuery.cs" />
+    <Compile Include="Protocols\Client\C1510HomeFoundryQuery.cs" />
+    <Compile Include="Protocols\Client\C1515HomeVisitorQuery.cs" />
+    <Compile Include="Protocols\Client\C1517HomeBrowseInfoQuery.cs" />
+    <Compile Include="Protocols\Client\CF0GetEnemyList.cs" />
+    <Compile Include="Protocols\Client\ClientProtocol.cs" />
+    <Compile Include="Protocols\Client\L52RoleList.cs" />
+    <Compile Include="Protocols\IProtocol.cs" />
+    <Compile Include="Protocols\Protocol.cs" />
+    <Compile Include="Protocols\Client\G14FFHomeSceneElements.cs" />
+    <Compile Include="Protocols\ProtocolSizeExceedException.cs" />
+    <Compile Include="Protocols\Server\D14EDHomeBrief.cs" />
+    <Compile Include="Protocols\Server\D14EEHomeDetail.cs" />
+    <Compile Include="Protocols\Client\C14F1EditHomeEnd.cs" />
+    <Compile Include="Protocols\Server\D1502HomeSyncNoticeClient.cs" />
+    <Compile Include="Protocols\Server\D150AHomeFoundryFormulasSync.cs" />
+    <Compile Include="Protocols\Server\D1516HomeVisitorInfo.cs" />
+    <Compile Include="Protocols\Server\D1521HomeEditRes.cs" />
+    <Compile Include="Protocols\Server\D1522HomeBrowseInfoQuery_Re.cs" />
+    <Compile Include="Protocols\Server\D42PlayerLogin_Re.cs" />
+    <Compile Include="Protocols\Server\DEFUpdateEnemyList_Re.cs" />
+    <Compile Include="Protocols\Server\DF1GetEnemyList_re.cs" />
+    <Compile Include="Protocols\Server\S02SMKey.cs" />
+    <Compile Include="Protocols\Server\S04OnlineAnnounce.cs" />
+    <Compile Include="Protocols\Server\ServerProtocol.cs" />
+    <Compile Include="Net\Proxies\UserProxy.cs" />
+    <Compile Include="ProxyControl.cs" />
+    <Compile Include="Setup\Constants.cs" />
+    <Compile Include="Setup\ProxySetup.cs" />
+    <Compile Include="Setup\ProxySetupXml.cs" />
+    <Compile Include="Setup\ProxyXml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

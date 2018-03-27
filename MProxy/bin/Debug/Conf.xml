@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<!-- Setup for 155 proxy -->
+<Setup>
+	<!-- Address and port where gdelivery is listening, it should match /gdeliveryd/gamesys.conf -> [GDeliveryServer] -->
+	<DeliveryServerAddr>127.0.0.1:29100</DeliveryServerAddr>
+	<!-- Address and port where program will listen for glinkd connections, port should match /glinkd/gamesys.conf -> [GDeliveryClient] -->
+	<LinkProxyAddr>0.0.0.0:44501</LinkProxyAddr>
+	<!-- For each glinkd running there should be a Proxy field -->
+	<Proxies>
+		<Proxy>
+			<!-- Address and port where program will listen for user connections, port should match /patcher/serverlist.txt address -->
+			<UserProxyAddr>0.0.0.0:44500</UserProxyAddr>
+			<!-- Address and port where glinkd is listening for user connections, it should match /glinkd/gamesys.conf -> [GLinkServerX] -->
+			<LinkServerAddr>127.0.0.1:29005</LinkServerAddr>
+			<!-- Address and port where program will listen for gs connection(s), it should match /gs/gmserver.conf -> [GProviderServerX] -->
+			<!-- Since new packets are coming from homestead gs only, you can make an alternative gamed folder from which you will run homestead instance only, and proxy will only handle packets to and from that instance -->
+			<GsProxyAddr>0.0.0.0:44502</GsProxyAddr>
+			<!-- Address and port where glinkd is listening for gs connections, port should match /glinkd/gamesys.conf -> [GProviderClientX] -->
+			<ProviderServerAddr>127.0.0.1:29301</ProviderServerAddr>
+		</Proxy>
+	</Proxies>
+</Setup>

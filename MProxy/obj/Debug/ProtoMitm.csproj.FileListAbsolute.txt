@@ -1,0 +1,6 @@
+c:\users\gnitargetnisid\documents\visual studio 2013\Projects\MProxy\MProxy\bin\Debug\MProxy.exe.config
+c:\users\gnitargetnisid\documents\visual studio 2013\Projects\MProxy\MProxy\bin\Debug\MProxy.exe
+c:\users\gnitargetnisid\documents\visual studio 2013\Projects\MProxy\MProxy\bin\Debug\MProxy.pdb
+c:\users\gnitargetnisid\documents\visual studio 2013\Projects\MProxy\MProxy\obj\Debug\MProxy.exe
+c:\users\gnitargetnisid\documents\visual studio 2013\Projects\MProxy\MProxy\obj\Debug\MProxy.pdb
+C:\Users\gnitargetnisid\Documents\Visual Studio 2013\Projects\MProxy\MProxy\obj\Debug\MProxy.csprojResolveAssemblyReference.cache
