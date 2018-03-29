@@ -35,7 +35,7 @@ namespace MProxy.Protocols.Client
         public override void Process()
         {
             UserProxy user = (UserProxy)Session;
-            if (user.ID != RoleID)
+            if (user.RoleID != RoleID)
                 return;
             Localsid = user.Localsid;
             user.SendToDelivery(this.Marshal());
