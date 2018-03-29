@@ -14,8 +14,9 @@ namespace MProxy.Net.Proxies
 {
     class HomeProxy : Proxy
     {
-        public HomeProxy(uint id, NetIORemoteClient link, NetIOProviderClient provider) : base(id, link, provider) { }
+        public HomeProxy(uint id, NetIORemoteClient link, NetIOProviderClient provider) : base(link, provider) { }
         public EventHandler<RecvEventArgs> OnGsSendUser;
+        private static uint Counter = 0;
 
         public override ClientProtocol DecodeCli(Octets os)
         {
@@ -50,6 +51,12 @@ namespace MProxy.Net.Proxies
             }
         }
 
+        protected override void OnConnected(object sender, EventArgs e)
+        {
+            ID = ++Counter;
+            Console.WriteLine("Gs {0} connected to Provider {1}", ID, Server);
+            base.OnConnected(sender, e);
+        }
 
         public void SendToUser(uint role_id, Octets data)
         {

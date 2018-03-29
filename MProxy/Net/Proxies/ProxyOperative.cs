@@ -16,6 +16,7 @@ namespace MProxy.Net.Proxies
         private ConcurrentQueue<Protocol> StreamSendCli, StreamSendSrv;
         private bool CliSendWork, SrvSendWork;
         private bool CliRecvWork, SrvRecvWork;
+        private Thread T1, T2, T3, T4;
         private ManualResetEvent CliSendRE, SrvSendRE;
         private ManualResetEvent CliRecvRE, SrvRecvRE;
         private Proxy Parent;
@@ -30,16 +31,24 @@ namespace MProxy.Net.Proxies
             CliRecvRE = new ManualResetEvent(false);
             SrvSendRE = new ManualResetEvent(false);
             SrvRecvRE = new ManualResetEvent(false);
+            T1 = new Thread(() => ClientSendWork());
+            T2 = new Thread(() => ServerSendWork());
+            T3 = new Thread(() => ClientRecvWork());
+            T4 = new Thread(() => ServerRecvWork());
+            T1.IsBackground = true;
+            T2.IsBackground = true;
+            T3.IsBackground = true;
+            T4.IsBackground = true;
         }
 
         public void Run()
         {
             CliSendWork = SrvSendWork = false;
             CliRecvWork = SrvRecvWork = false;
-            new Thread(() => ClientRecvWork()).Start();
-            new Thread(() => ClientSendWork()).Start();
-            new Thread(() => ServerRecvWork()).Start();
-            new Thread(() => ServerSendWork()).Start();
+            T1.Start();
+            T2.Start();
+            T3.Start();
+            T4.Start();
         }
         private void ClientRecvWork()
         {

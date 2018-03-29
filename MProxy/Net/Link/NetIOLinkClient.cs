@@ -19,12 +19,14 @@ namespace MProxy.Net
         {
             Socket s = (Socket)res.AsyncState;
             if (!s.Connected)
-                Console.WriteLine("Unable to connect to Linkserver, check if it's running and that the ports match.");
+            {
+                Console.WriteLine("Unable to connect to Link server {0}, check if it's running and that the ports match", this);
+                OnConnectionRefused(this, new EventArgs());
+            }
             else
             {
                 base.OnConnect(res);
-                Console.WriteLine("Connected to Link {0}.", this);
-                sock.BeginReceive(buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, sock);
+                Skt.BeginReceive(Buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, Skt);
             }
         }
     }

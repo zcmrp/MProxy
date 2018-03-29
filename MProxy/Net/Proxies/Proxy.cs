@@ -26,23 +26,23 @@ namespace MProxy.Net
 
         public EventHandler OnDisconnect;
         public uint ID { get; protected set; }
-        public Proxy(uint id, NetIORemoteClient remote, NetIOLocalClient srv)
+        public Proxy(NetIORemoteClient remote, NetIOLocalClient srv)
         {
-            this.ID = id;
-            this.Client = remote;
-            this.Server = srv;
-            this.Client.OnRecv += OnClientRecv;
-            this.Server.OnRecv += OnServerRecv;
-            this.Client.OnDisconnect += OnClientDisconnect;
-            this.Server.OnDisconnect += OnServerDisconnect;
-            this.Server.OnConnected += OnConnected;
+            ID = 0;
+            Client = remote;
+            Server = srv;
+            Client.OnRecv += OnClientRecv;
+            Server.OnRecv += OnServerRecv;
+            Client.OnDisconnect += OnClientDisconnect;
+            Server.OnDisconnect += OnServerDisconnect;
+            Server.OnConnected += OnConnected;
+            Server.OnConnectionRefused += OnConnectionRefused;
             Operative = new ProxyOperative(this);
         }
 
         public void Connect()
         {
             this.Server.Start();
-            this.Client.Start();
         }
         
         protected void OnClientRecv(object sender, RecvEventArgs e)
@@ -91,12 +91,6 @@ namespace MProxy.Net
             data = UpdateSendCli(data);
             Client.Send(data);
         }
-        
-        public void SetID(uint ID)
-        {
-            this.ID = ID;
-        }
-
         protected virtual Octets UpdateRecvCli(Octets os)
         {
             return os;
@@ -116,10 +110,16 @@ namespace MProxy.Net
         public abstract ServerProtocol DecodeSrv(Octets os);
         public abstract ClientProtocol DecodeCli(Octets os);
 
-        private void OnConnected(object sender, EventArgs e)
+        protected virtual void OnConnected(object sender, EventArgs e)
         {
             Connected = true;
+            Client.Start();
             Operative.Run();
+        }
+        private void OnConnectionRefused(object sender, EventArgs e)
+        {
+            Client.Dispose();
+            OnDisconnect(this, new EventArgs());
         }
 
         public void Disconnect()
@@ -127,6 +127,11 @@ namespace MProxy.Net
             Connected = false;
             Client.Dispose();
             Server.Dispose();
+            OnDisconnect(this, new EventArgs());
+        }
+        public override string ToString()
+        {
+            return Client.ToString();
         }
         ~Proxy()
         {

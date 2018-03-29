@@ -8,26 +8,30 @@ using System.Threading.Tasks;
 
 namespace MProxy.Protocols.Client
 {
-    class C1515HomeVisitorQuery : ClientProtocol
+    class C46SelectRole : ClientProtocol
     {
-        public uint HomeID { get; private set; }
         public uint RoleID { get; private set; }
-        public C1515HomeVisitorQuery(Octets os, UserProxy user) : base(0x1515, os, user) { }
+        public byte Flag { get; private set; }
+        public C46SelectRole(Octets os, UserProxy user)
+            : base(0x46, os, user)
+        {
+
+        }
 
         public override Protocol Unmarshal()
         {
             SwitchOrder();
-            HomeID = ReadUInt();
             RoleID = ReadUInt();
             SwitchOrder();
+            Flag = ReadByte();
             return this;
         }
 
         public override void Process()
         {
             UserProxy user = (UserProxy)Session;
-            if (RoleID == user.RoleID)
-                user.SendToDelivery(this.Marshal());
+            user.SetRoleID(RoleID);
+            base.Process();
         }
     }
 }

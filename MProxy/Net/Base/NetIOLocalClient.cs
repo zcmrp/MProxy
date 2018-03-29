@@ -11,13 +11,14 @@ namespace MProxy.Net.Base
     class NetIOLocalClient : NetIOClient
     {
         public EventHandler OnConnected;
+        public EventHandler OnConnectionRefused;
         public NetIOLocalClient(IPEndPoint ipe) : base(new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp))
         {
             IPE = ipe;
         }
         override public void Start()
         {
-            sock.BeginConnect(IPE, OnConnect, sock);
+            Skt.BeginConnect(IPE, OnConnect, Skt);
         }
 
         protected virtual void OnConnect(IAsyncResult res)

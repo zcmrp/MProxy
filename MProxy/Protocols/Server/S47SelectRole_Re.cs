@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MProxy.Protocols.Client
+namespace MProxy.Protocols.Server
 {
-    class C14F1EditHomeEnd : ClientProtocol
+    class S47SelectRole_Re : ServerProtocol
     {
-        public uint HomeID { get; private set; }
         public byte[] Unknown { get; private set; }
-        public C14F1EditHomeEnd(Octets os, UserProxy user) : base(0x14F1, os, user) { }
+        public S47SelectRole_Re(Octets os, UserProxy user)
+            : base(0x47, os, user)
+        {
+
+        }
 
         public override Protocol Unmarshal()
         {
-            SwitchOrder();
-            HomeID = ReadUInt();
-            SwitchOrder();
             Unknown = ReadToEnd();
             return this;
         }
@@ -26,9 +26,8 @@ namespace MProxy.Protocols.Client
         public override void Process()
         {
             UserProxy user = (UserProxy)Session;
-            if (HomeID == user.RoleID)
-                user.SendToDelivery(this.Marshal());
+            user.ProcessRoleID();
+            base.Process();
         }
-
     }
 }

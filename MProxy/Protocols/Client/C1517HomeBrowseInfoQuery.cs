@@ -29,9 +29,8 @@ namespace MProxy.Protocols.Client
         public override void Process()
         {
             UserProxy user = (UserProxy)Session;
-            if (user.ID != RoleID)
-                return;
-            user.SendToDelivery(this.Marshal());
+            if (user.RoleID == RoleID)
+                user.SendToDelivery(this.Marshal());
         }
     }
 }

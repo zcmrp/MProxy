@@ -14,14 +14,16 @@ namespace MProxy.Net.Proxies
 {
     class LinkProxy : Proxy
     {
-        public EventHandler<RecvEventArgs> UserLogin;
         public EventHandler<RecvEventArgs> OnDeliverySendUser;
-        public EventHandler<RecvEventArgs> OnRequestUserID;
+        public EventHandler<RecvEventArgs> OnRequestRoleID;
         public EventHandler<RecvEventArgs> OnUserSetLink;
+        public EventHandler<RecvEventArgs> OnUserLogout;
+        private HashSet<UserProxy> Users;
+        private static uint Counter = 0;
         public LinkProxy(uint id, NetIORemoteClient remote, NetIODeliveryClient srv)
-            : base(id, remote, srv)
+            : base(remote, srv)
         {
-
+            Users = new HashSet<UserProxy>();
         }
 
         public override ClientProtocol DecodeCli(Octets os)
@@ -52,8 +54,8 @@ namespace MProxy.Net.Proxies
             os.Undo();
             switch (type.Value)
             {
-                case 0x42:
-                    return new D42PlayerLogin_Re(os, this);
+                case 0x45:
+                    return new D45PlayerLogout(os, this);
                 case 0xEF:
                     return new DEFUpdateEnemyList_Re(os, this);
                 case 0xF1:
@@ -77,10 +79,11 @@ namespace MProxy.Net.Proxies
             }
         }
 
-        public void OnUserLogin(uint user_id, uint role_id)
+        protected override void OnConnected(object sender, EventArgs e)
         {
-            Octets os = new Octets().Write(user_id).Write(role_id);
-            UserLogin(this, new RecvEventArgs(os));
+            ID = ++Counter;
+            Console.WriteLine("Link {0} connected to Delivery {1}", ID, Server);
+            base.OnConnected(sender, e);
         }
 
         public void SendToUser(uint role_id, Octets data)
@@ -93,7 +96,7 @@ namespace MProxy.Net.Proxies
         {
             Octets os = new Octets().Write(localsid);
             RecvEventArgs arg = new RecvEventArgs(os);
-            OnRequestUserID(this, arg);
+            OnRequestRoleID(this, arg);
             Octets res = arg.Res;
             return res.ReadUInt();
         }
@@ -102,6 +105,36 @@ namespace MProxy.Net.Proxies
         {
             Octets os = new Octets().Write(user_id).Write(localsid);
             OnUserSetLink(this, new RecvEventArgs(os));
+        }
+
+        public void AddUser(UserProxy user)
+        {
+            lock (Users)
+                Users.Add(user);
+        }
+
+        public void RemoveUser(UserProxy user)
+        {
+            lock (Users)
+                Users.Remove(user);
+        }
+
+        public void DisconnectAllUsers()
+        {
+            foreach (UserProxy user in Users)
+            {
+                lock (user)
+                {
+                    user.SetLink(null);
+                    user.Disconnect();
+                }
+            }
+        }
+
+        public void LogoutUser(uint RoleID)
+        {
+            Octets os = new Octets().Write(RoleID);
+            OnUserLogout(this, new RecvEventArgs(os));
         }
     }
 }

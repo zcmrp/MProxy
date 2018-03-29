@@ -30,7 +30,7 @@ namespace MProxy.Protocols.Client
         public override void Process()
         {
             UserProxy user = (UserProxy)Session;
-            if (this.RoleID == user.ID)
+            if (this.RoleID == user.RoleID)
                 user.SendToDelivery(this.Marshal());
         }
     }

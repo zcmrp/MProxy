@@ -15,23 +15,23 @@ namespace MProxy.Net
     {
         protected IPEndPoint IPE { get; set; }
 
-        protected Socket sock;
+        protected Socket Skt;
 
-        protected byte[] buffer;
+        protected byte[] Buffer;
 
         public EventHandler<RecvEventArgs> OnRecv;
         public EventHandler OnDisconnect;
 
-        public C2SSecurity c2s;
-        public S2CSecurity s2c;
+        public C2SSecurity C2S;
+        public S2CSecurity S2C;
 
         public NetIOClient(Socket sock)
         {
-            this.sock = sock;
+            this.Skt = sock;
             this.IPE = (IPEndPoint)sock.RemoteEndPoint;
-            buffer = new byte[Constants.BUF_ALLOC_SIZE];
-            c2s = new C2SSecurity();
-            s2c = new S2CSecurity();
+            Buffer = new byte[Constants.BUF_ALLOC_SIZE];
+            C2S = new C2SSecurity();
+            S2C = new S2CSecurity();
         }
 
         public abstract void Start();
@@ -49,16 +49,15 @@ namespace MProxy.Net
                 uint len = (uint)s.EndReceive(res);
                 if (len > 0)
                 {
-                    RecvEventArgs re = new RecvEventArgs(new Octets(buffer, len));
+                    RecvEventArgs re = new RecvEventArgs(new Octets(Buffer, len));
                     OnRecv(this, re);
-                    sock.BeginReceive(buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, sock);
+                    Skt.BeginReceive(Buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, Skt);
                 }
                 else
                     Disconnect();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.StackTrace);
                 Disconnect();
             }
         }
@@ -67,11 +66,10 @@ namespace MProxy.Net
         {
             try
             {
-                sock.BeginSend(os.RawData(), 0, os.Length, SocketFlags.None, OnSend, sock);
+                Skt.BeginSend(os.RawData(), 0, os.Length, SocketFlags.None, OnSend, Skt);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.StackTrace);
                 Disconnect();
             }
         }
@@ -86,9 +84,8 @@ namespace MProxy.Net
                 else
                     s.EndSend(res);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Console.WriteLine(e.StackTrace);
                 Disconnect();
             }
         }
@@ -106,7 +103,7 @@ namespace MProxy.Net
 
         public void Dispose()
         {
-            this.sock.Close();
+            this.Skt.Close();
         }
     }
 }

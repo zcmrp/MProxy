@@ -18,7 +18,7 @@ namespace MProxy.Net.Base
         }
         override public void Start()
         {
-            sock.BeginReceive(buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, sock);
+            Skt.BeginReceive(Buffer, 0, (int)Constants.BUF_ALLOC_SIZE, SocketFlags.None, OnRecvBegin, Skt);
         }
     }
 }

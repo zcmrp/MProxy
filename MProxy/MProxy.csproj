@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mono.Posix">
+      <HintPath>..\..\..\..\..\Downloads\Music\Mono.Posix.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -75,6 +78,7 @@
     <Compile Include="Protocols\Client\C1510HomeFoundryQuery.cs" />
     <Compile Include="Protocols\Client\C1515HomeVisitorQuery.cs" />
     <Compile Include="Protocols\Client\C1517HomeBrowseInfoQuery.cs" />
+    <Compile Include="Protocols\Client\C46SelectRole.cs" />
     <Compile Include="Protocols\Client\CF0GetEnemyList.cs" />
     <Compile Include="Protocols\Client\ClientProtocol.cs" />
     <Compile Include="Protocols\Client\L52RoleList.cs" />
@@ -90,11 +94,12 @@
     <Compile Include="Protocols\Server\D1516HomeVisitorInfo.cs" />
     <Compile Include="Protocols\Server\D1521HomeEditRes.cs" />
     <Compile Include="Protocols\Server\D1522HomeBrowseInfoQuery_Re.cs" />
-    <Compile Include="Protocols\Server\D42PlayerLogin_Re.cs" />
+    <Compile Include="Protocols\Server\D45PlayerLogout.cs" />
     <Compile Include="Protocols\Server\DEFUpdateEnemyList_Re.cs" />
     <Compile Include="Protocols\Server\DF1GetEnemyList_re.cs" />
     <Compile Include="Protocols\Server\S02SMKey.cs" />
     <Compile Include="Protocols\Server\S04OnlineAnnounce.cs" />
+    <Compile Include="Protocols\Server\S47SelectRole_Re.cs" />
     <Compile Include="Protocols\Server\ServerProtocol.cs" />
     <Compile Include="Net\Proxies\UserProxy.cs" />
     <Compile Include="ProxyControl.cs" />

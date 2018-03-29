@@ -8,28 +8,34 @@ using System.Threading.Tasks;
 
 namespace MProxy.Protocols.Server
 {
-    class S04OnlineAnnounce : ServerProtocol
+    class D45PlayerLogout : ServerProtocol
     {
-        public uint UserID { get; private set; }
+        public uint Result { get; private set; }
+        public uint RoleID { get; private set; }
+        public uint ProviderLinkID { get; private set; }
         public uint Localsid { get; private set; }
-        public byte[] Unknown { get; private set; }
-        public S04OnlineAnnounce(Octets os, UserProxy user) : base(0x04, os, user) { }
+        public D45PlayerLogout(Octets os, LinkProxy link)
+            : base(0x45, os, link)
+        {
+
+        }
 
         public override Protocol Unmarshal()
         {
             SwitchOrder();
-            UserID = ReadUInt();
+            Result = ReadUInt();
+            RoleID = ReadUInt();
+            ProviderLinkID = ReadUInt();
             Localsid = ReadUInt();
             SwitchOrder();
-            Unknown = ReadToEnd();
             return this;
         }
 
         public override void Process()
         {
-            UserProxy user = (UserProxy)Session;
-            user.SetLocalsid(Localsid);
-            user.SetID(UserID);
+            LinkProxy link = (LinkProxy)Session;
+            if (Result == 1)
+                link.LogoutUser(RoleID);
             base.Process();
         }
     }

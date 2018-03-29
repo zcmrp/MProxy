@@ -1,4 +1,6 @@
-﻿using MProxy.Net;
+﻿using Mono.Unix;
+using Mono.Unix.Native;
+using MProxy.Net;
 using MProxy.Setup;
 using System;
 using System.Collections.Generic;
@@ -12,11 +14,19 @@ namespace MProxy
 {
     class Program
     {
+
+        private static UnixSignal[] Signals = new UnixSignal[] { 
+            new UnixSignal(Signum.SIGINT), 
+            new UnixSignal(Signum.SIGTERM), 
+        };
+
         static void Main(string[] args)
         {
             if (args.Length != 1)
             {
-                Console.WriteLine("Usage: ./lspi conf.xml");
+                Console.WriteLine("Usage: ");
+                Console.WriteLine("Windows: MProxy.exe Conf.xml");
+                Console.WriteLine("Linux: mono MProxy.exe Conf.xml");
                 return;
             }
             XmlSerializer serializer = new XmlSerializer(typeof(ProxySetupXml));
@@ -24,19 +34,25 @@ namespace MProxy
             {
                 Console.WriteLine("Configuration file not found");
             }
+            ProxyControl ctrl = null;
             using (StreamReader reader = new StreamReader(args[0]))
             {
                 ProxySetupXml xml = (ProxySetupXml)serializer.Deserialize(reader);
                 ProxySetup setup = new ProxySetup();
                 if (!setup.Set(xml))
                 {
-                    Console.WriteLine("Bad format in file.");
+                    Console.WriteLine("Bad format in file");
                     return;
                 }
-                ProxyControl ctrl = new ProxyControl(setup);
+                ctrl = new ProxyControl(setup);
                 ctrl.Run();
             }
-            while (true) Console.ReadLine();
+            while (true)
+            {
+                int id = UnixSignal.WaitAny(Signals);
+                if (id >= 0 && id < Signals.Length)
+                    return;
+            }
         }
     }
 }

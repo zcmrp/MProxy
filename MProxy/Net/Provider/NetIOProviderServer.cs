@@ -21,7 +21,6 @@ namespace MProxy.Net.Provider
             {
                 Socket rcli = TCP.AcceptSocket();
                 NetIORemoteClient remote = new NetIORemoteClient(rcli);
-                Console.WriteLine("Link connected from {0}", remote);
                 NetIOProviderClient provider = new NetIOProviderClient(CIPE);
                 HomeProxy home = new HomeProxy(0, remote, provider);
                 home.OnDisconnect += OnClientDisconnect;
@@ -32,7 +31,8 @@ namespace MProxy.Net.Provider
         protected override void OnClientDisconnect(object sender, EventArgs e)
         {
             HomeProxy home = (HomeProxy)sender;
-            Console.WriteLine("Link {0} disconnect from delivery", home.ID);
+            if (home.ID != 0)
+                Console.WriteLine("Gs {0} disconnected from Provider", home.ID);
         }
     }
 }

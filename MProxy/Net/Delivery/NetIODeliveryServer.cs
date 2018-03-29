@@ -18,10 +18,11 @@ namespace MProxy.Net
         public NetIODeliveryServer(ushort port, string chost, ushort cport) : base(port, chost, cport) { }
         public NetIODeliveryServer(IPAddress ip, ushort port, IPAddress cip, ushort cport) : base(ip, port, cip, cport) { }
 
-        public EventHandler<RecvEventArgs> OnUserLogin;
         public EventHandler<RecvEventArgs> OnDeliverySendUser;
-        public EventHandler<RecvEventArgs> OnRequestUserID;
+        public EventHandler<RecvEventArgs> OnRequestRoleID;
         public EventHandler<RecvEventArgs> OnUserSetLink;
+        public EventHandler<RecvEventArgs> OnUserLogout;
+        public EventHandler OnLinkDisconnect;
 
         protected override void OnListen()
         {
@@ -29,21 +30,23 @@ namespace MProxy.Net
             {
                 Socket rcli = TCP.AcceptSocket();
                 NetIORemoteClient remote = new NetIORemoteClient(rcli);
-                Console.WriteLine("Link connected from {0}", remote);
                 NetIODeliveryClient delivery = new NetIODeliveryClient(CIPE);
-                LinkProxy link = new LinkProxy(0, remote, delivery);
+                ++Counter;
+                LinkProxy link = new LinkProxy(Counter, remote, delivery);
                 link.OnDisconnect += OnClientDisconnect;
-                link.UserLogin += OnUserLogin;
                 link.OnDeliverySendUser += OnDeliverySendUser;
-                link.OnRequestUserID += OnRequestUserID;
+                link.OnRequestRoleID += OnRequestRoleID;
                 link.OnUserSetLink += OnUserSetLink;
+                link.OnUserLogout += OnUserLogout;
                 link.Connect();
             }
         }
         protected override void OnClientDisconnect(object sender, EventArgs e)
         {
             LinkProxy link = (LinkProxy)sender;
-            Console.WriteLine("Link {0} disconnect from delivery", link.ID);
+            if (link.ID != 0)
+                Console.WriteLine("Link {0} disconnect from delivery, drop all players", link.ID);
+            OnLinkDisconnect(sender, e);
         }
     }
 }
